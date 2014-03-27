@@ -29,25 +29,23 @@ In addition, relying on workarounds in general leads to other problems:
  
 <h2>Proposal</h2>
  
-<p>Internet Explorer already includes a solution in the form of <a href="http://msdn.microsoft.com/en-us/library/ie/jj154912(v=vs.85).aspx"/>msLaunchUri</a>: </p>
+<p>Internet Explorer already includes a solution in the form of <a href="http://msdn.microsoft.com/en-us/library/ie/jj154912(v=vs.85).aspx"/>msLaunchUri</a>. I propose this method be adapted as a cross-browser standard in the form of navigator.launchUri.</p>
+
 <blockquote>
-    <p>navigator.msLaunchUri(uri, successCallback, noHandlerCallback)</p>
+    <p>navigator.launchUri(uri, successCallback, noHandlerCallback)</p>
  
     <p>Parameters:
     <dl>
-    <dt>uri [in]</dt>
-        <dd>Type: DOMString</dd>
+    <dt>uri</dt>        
         <dd>URL containing protocol of the document or resource to be displayed.</dd>
-    <dt>successCallback [in, optional]</dt>
-        <dd>Type: MSLaunchUriCallback</dd>
+    <dt>successCallback</dt>
         <dd>Function to be executed if the protocol handler is present.</dd>
-    <dt>noHandlerCallback [in, optional]</dt>
-        <dd>Type: MSLaunchUriCallback</dd>
+    <dt>noHandlerCallback</dt>
         <dd>Function to be executed if the protocol handler isn't present.</dd>
     </dl></p>
 </blockquote>
 
-<p>I propose this method be adapted as a cross-browser standard in the form of navigator.launchUri.</p>
+<p></p>
  
 <h3>Benefits</h3>
 
