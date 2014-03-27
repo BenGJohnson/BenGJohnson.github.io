@@ -1,0 +1,73 @@
+<html><body>
+<h1>External Protocol Handling Specification</h1>
+
+
+<h2>Abstract</h2>
+The document describes a new standard API for handling external protocols within browsers.
+
+<h2>Introduction</h2>
+Currently, there exists no standard good standard mechanism in browsers for handling links to external content; everything is done via repurposing other features with various deficiencies:
+
+<ol>
+<li>Load via iFrame/img/etc elements. Currently the de-facto standard.
+    <p>Problems: iFrame are designed to include different documents in a HTML page; that they work to jump-start launch external links is a side-effect. Using them forces a developer to hide junk content in their web page, and the lack of visibility into the external protocol handling makes it difficult to clean up efficiently.</p></li>
+ 
+<li>Change window.location
+    <p>Problems: Interrupts the current page load. Triggers unload events. Also problematic theoretically, as the developer is not sending the user to a new page.</p></li>
+ 
+<li>Add a hyperlink to page content
+    <p>Problems: Interrupts the current page load. Triggers unload events. Reliable as a fallback, but requires user interaction.</p></li>
+</ol>
+
+In addition, relying on workarounds in general leads to other problems: 
+
+<ol> 
+<li>browser updates can cause breaking changes because the feature is secondary</li>
+<li>feature set is not robust</li>
+<li>The URI is loaded as part of the browser workflow, when often what is needed is to load a URI as part of an application workflow.</li>
+</ol>
+ 
+<h2>Proposal</h2>
+ 
+<p>Internet Explorer already includes a solution in the form of <a href="http://msdn.microsoft.com/en-us/library/ie/jj154912(v=vs.85).aspx"/>msLaunchUri</a>: </p>
+<blockquote>
+    <p>navigator.msLaunchUri(uri, successCallback, noHandlerCallback)</p>
+ 
+    <p>Parameters:
+    <dl>
+    <dt>uri [in]</dt>
+        <dd>Type: DOMString</dd>
+        <dd>URL containing protocol of the document or resource to be displayed.</dd>
+    <dt>successCallback [in, optional]</dt>
+        <dd>Type: MSLaunchUriCallback</dd>
+        <dd>Function to be executed if the protocol handler is present.</dd>
+    <dt>noHandlerCallback [in, optional]</dt>
+        <dd>Type: MSLaunchUriCallback</dd>
+        <dd>Function to be executed if the protocol handler isn't present.</dd>
+    </dl></p>
+</blockquote>
+
+<p>I propose this method be adapted as a cross-browser standard in the form of navigator.launchUri.</p>
+ 
+<h3>Benefits</h3>
+
+<ol>
+<li>Provides an API method to launch external protocols, avoiding hacky workarounds</li>
+<li>Provides feedback to the web application so fallbacks can be executed if the client is unable or unwilling to fulfill the request</li>
+</ol>
+
+<h3>Potential Concerns</h3>
+
+<dl> 
+<dt><h4>Privacy</h4></dt>
+ 
+<dd>The API callback appear to present a risk of exposing user information (in the form of capabilities) to a malicious application, and increased fingerprinting exposure is obviously a privacy no-no. There are a number of mitigating factors here, though:
+    
+    <ul>
+    <li>Capabilities are reported as part of an API request, not as part of a header - harder to access</li>
+    <li>Capability report is gated by a request that would likely requires user interaction/approval - more difficult to access information on multiple protocols</li>
+    <li>Application cannot distinguish between "user doesn't have handler" and "user declined request"</li>
+    </ul>
+</dd>
+</dl>
+</body></html>
